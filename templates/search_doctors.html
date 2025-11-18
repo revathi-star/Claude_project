@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Find Doctors{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">
+        <i class="fas fa-search"></i> Find Doctors
+    </h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET">
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label">Search by Name</label>
+                        <input type="text" class="form-control" name="name" value="{{ name }}" placeholder="Enter doctor name">
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label">Search by Specialization</label>
+                        <select class="form-select" name="specialization">
+                            <option value="">All Specializations</option>
+                            {% for department in departments%}
+                            <option value="{{department['name']}}">{{department['name']}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        {% if doctors %}
+            {% for doctor in doctors %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 24px;">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="mb-0">Dr. {{ doctor.name }}</h5>
+                                <p class="text-muted mb-0">{{ doctor.specialization }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-6 mb-2">
+                                <small class="text-muted">Department</small>
+                                <p class="mb-0">{{ doctor.department_name }}</p>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <small class="text-muted">Experience</small>
+                                <p class="mb-0">{{ doctor.experience }} years</p>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <small class="text-muted">Phone</small>
+                                <p class="mb-0">{{ doctor.phone }}</p>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <small class="text-muted">Email</small>
+                                <p class="mb-0">{{ doctor.email }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <a href="{{ url_for('book_appointment', doctor_id=doctor.id) }}" class="btn btn-primary w-100">
+                            <i class="fas fa-calendar-plus"></i> Book Appointment
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No doctors found matching your criteria.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

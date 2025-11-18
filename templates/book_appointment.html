@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Book Appointment{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">
+        <i class="fas fa-calendar-plus"></i> Book Appointment
+    </h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; font-size: 32px;">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                    </div>
+                    <h4 class="text-center">Dr. {{ doctor.name }}</h4>
+                    <p class="text-center text-muted">{{ doctor.specialization }}</p>
+                    <hr>
+                    <p><strong>Department:</strong> {{ depart }}</p>
+                    <p><strong>Experience:</strong> {{ doctor.experience }} years</p>
+                    <p><strong>Phone:</strong> {{ doctor.phone }}</p>
+                    <p><strong>Email:</strong> {{ doctor.email }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Select Appointment Slot</h5>
+                </div>
+                <div class="card-body">
+                    {% if availabilities %}
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Select Date & Time *</label>
+                            <select class="form-select" name="date_time" id="dateTimeSelect" required>
+                                <option value="">Choose a slot</option>
+                                {% for avail in availabilities %}
+                                <option value="{{ avail.date }}|{{ avail.start_time }}">
+                                    {{ avail.date }} - {{ avail.start_time }} to {{ avail.end_time }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <input type="hidden" name="date" id="selectedDate">
+                        <input type="hidden" name="time" id="selectedTime">
+                        <div class="mb-3">
+                            <label class="form-label">Reason for Visit *</label>
+                            <textarea class="form-control" name="reason" rows="3" required placeholder="Briefly describe your symptoms or reason for consultation"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check"></i> Confirm Booking
+                        </button>
+                        <a href="{{ url_for('search_doctors') }}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                    {% else %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        No available slots for the next 7 days. Please check back later or contact the doctor directly.
+                    </div>
+                    <a href="{{ url_for('search_doctors') }}" class="btn btn-secondary">Back to Search</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0"><i class="fas fa-info-circle"></i> Appointment Guidelines</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li>Please arrive 10 minutes before your appointment time</li>
+                        <li>Bring any previous medical reports if available</li>
+                        <li>You can cancel your appointment up to 2 hours before the scheduled time</li>
+                        <li>For emergencies, please visit the emergency department directly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('dateTimeSelect').addEventListener('change', function() {
+    const value = this.value;
+    if (value) {
+        const [date, time] = value.split('|');
+        document.getElementById('selectedDate').value = date;
+        document.getElementById('selectedTime').value = time;
+    }
+});
+</script>
+{% endblock %}

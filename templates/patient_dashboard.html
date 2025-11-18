@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">
+        <i class="fas fa-user"></i> Welcome, {{ patient.name }}
+    </h2>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-hospital"></i> Available Departments
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for dept in departments %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">{{ dept.name }}</h5>
+                                    <p class="card-text">{{ dept.description }}</p>
+                                    <p class="text-muted mb-2">
+                                        <i class="fas fa-user-md"></i> {{ dept.doctors_count }} doctors
+                                    </p>
+                                    <a href="{{ url_for('search_doctors', specialization=dept.name) }}" class="btn btn-sm btn-primary">
+                                        Find Doctors
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-warning">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar-alt"></i> Upcoming Appointments
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            {% if upcoming_appointments %}
+                            <div class="list-group">
+                                {% for apt in upcoming_appointments %}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">Dr. {{ apt.doctor_name }}</h6>
+                                            <p class="mb-1 text-muted">{{ apt.specialization }}</p>
+                                            <small>
+                                                <i class="fas fa-calendar"></i> {{ apt.date }} at {{ apt.time }}
+                                            </small>                                
+                                            <span class="badge bg-warning">{{ apt.status }}</span>
+                                            {% if apt.status=='Booked' %}
+                                            <a href="{{ url_for('cancel_appointment', appointment_id=apt.id) }}" 
+                                            class="btn btn-sm btn-danger mt-2"
+                                            onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                                Cancel
+                                            </a>
+                                            {% endif %}
+                                        </div>                                    
+                                    </div>
+                                    
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div>
+                        {% else %}
+                        <p class="text-muted">No upcoming appointments</p>
+                        <a href="{{ url_for('search_doctors') }}" class="btn btn-primary">Book an Appointment</a>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-history"></i> Past Appointments
+                    </h5>
+                </div>
+                <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                    {% if past_appointments %}
+                    <div class="list-group">
+                        {% for apt in past_appointments %}
+                        <div class="list-group-item">
+                            <h6 class="mb-1">Dr. {{ apt.doctor_name }}</h6>
+                            <p class="mb-1 text-muted">{{ apt.specialization }}</p>
+                            <small>
+                                <i class="fas fa-calendar"></i> {{ apt.date }} at {{ apt.time }}
+                            </small>
+                            {% if apt.diagnosis %}
+                            <hr>
+                            <p class="mb-1"><strong>Diagnosis:</strong> {{ apt.diagnosis }}</p>
+                            <p class="mb-0"><strong>Prescription:</strong> {{ apt.prescription }}</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No past appointments</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

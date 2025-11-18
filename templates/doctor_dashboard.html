@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Doctor Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">
+        <i class="fas fa-user-md"></i> Welcome, Dr. {{ doctor.name }}
+    </h2>
+    
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5><i class="fas fa-calendar-check"></i> Upcoming Appointments</h5>
+                    <h2>{{ upcoming_appointments|length }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5><i class="fas fa-users"></i> Total Patients</h5>
+                    <h2>{{ total_patients }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Today's Appointments</h5>
+        </div>
+        <div class="card-body">
+            {% if upcoming_appointments %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Patient Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Phone</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for apt in upcoming_appointments %}
+                        <tr>
+                            <td>{{ apt.time }}</td>
+                            <td>{{ apt.patient_name }}</td>
+                            <td>{{ apt.age }}</td>
+                            <td>{{ apt.gender }}</td>
+                            <td>{{ apt.phone }}</td>
+                            <td>
+                                <a href="{{ url_for('complete_appointment', appointment_id=apt.id) }}" class="btn btn-sm btn-success">
+                                    <i class="fas fa-check"></i> Complete
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted">No upcoming appointments</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

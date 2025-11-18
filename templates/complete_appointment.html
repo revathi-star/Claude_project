@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Complete Appointment{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">
+        <i class="fas fa-file-medical"></i> Complete Appointment
+    </h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Patient Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <strong>Name:</strong> {{ appointment.patient_name }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Age:</strong> {{ appointment.age }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Gender:</strong> {{ appointment.gender }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Blood Group:</strong> {{ appointment.blood_group or 'N/A' }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Phone:</strong> {{ appointment.phone }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Appointment:</strong> {{ appointment.date }} at {{ appointment.time }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="mb-0">Enter Treatment Details</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Diagnosis *</label>
+                            <textarea class="form-control" name="diagnosis" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Prescription *</label>
+                            <textarea class="form-control" name="prescription" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Additional Notes</label>
+                            <textarea class="form-control" name="notes" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i> Mark as Completed
+                        </button>
+                        <a href="{{ url_for('doctor_appointments') }}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Patient History</h5>
+                </div>
+                <div class="card-body" style="max-height: 600px; overflow-y: auto;">
+                    {% if patient_history %}
+                        {% for history in patient_history %}
+                        <div class="mb-3 p-3 border rounded">
+                            <strong>{{ history.date }} - {{ history.time }}</strong>
+                            <hr>
+                            <p class="mb-1"><strong>Diagnosis:</strong> {{ history.diagnosis }}</p>
+                            <p class="mb-1"><strong>Prescription:</strong> {{ history.prescription }}</p>
+                            {% if history.notes %}
+                            <p class="mb-0"><strong>Notes:</strong> {{ history.notes }}</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No previous history</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

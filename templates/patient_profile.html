@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">
+        <i class="fas fa-user-circle"></i> My Profile
+    </h2>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Edit Profile Information</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name *</label>
+                            <input type="text" class="form-control" name="name" value="{{ patient.name }}" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Age *</label>
+                                <input type="number" class="form-control" name="age" value="{{ patient.age }}" required min="1" max="120">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Gender *</label>
+                                <select class="form-select" name="gender" required>
+                                    <option value="Male" {{ 'selected' if patient.gender == 'Male' else '' }}>Male</option>
+                                    <option value="Female" {{ 'selected' if patient.gender == 'Female' else '' }}>Female</option>
+                                    <option value="Other" {{ 'selected' if patient.gender == 'Other' else '' }}>Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Blood Group</label>
+                                <select class="form-select" name="blood_group">
+                                    <option value="">Select</option>
+                                    <option value="A+" {{ 'selected' if patient.blood_group == 'A+' else '' }}>A+</option>
+                                    <option value="A-" {{ 'selected' if patient.blood_group == 'A-' else '' }}>A-</option>
+                                    <option value="B+" {{ 'selected' if patient.blood_group == 'B+' else '' }}>B+</option>
+                                    <option value="B-" {{ 'selected' if patient.blood_group == 'B-' else '' }}>B-</option>
+                                    <option value="AB+" {{ 'selected' if patient.blood_group == 'AB+' else '' }}>AB+</option>
+                                    <option value="AB-" {{ 'selected' if patient.blood_group == 'AB-' else '' }}>AB-</option>
+                                    <option value="O+" {{ 'selected' if patient.blood_group == 'O+' else '' }}>O+</option>
+                                    <option value="O-" {{ 'selected' if patient.blood_group == 'O-' else '' }}>O-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone *</label>
+                                <input type="tel" class="form-control" name="phone" value="{{ patient.phone }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email *</label>
+                                <input type="email" class="form-control" name="email" value="{{ patient.email }}" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Address</label>
+                            <textarea class="form-control" name="address" rows="2">{{ patient.address or '' }}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update Profile
+                        </button>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
