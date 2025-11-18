@@ -1,7 +1,7 @@
 # Claude_project
 This is a Flask app, whose code has initially been taken from Claude AI and then bugs encountered were fixed 
 
-# Project description
+## Project description
 - This is a app similar to the MAD-1 course project (MAD - Modern Appilication Development).
 - It serves as an interface to manage **Hospital data** which includes patients, doctors and an admin
 - It requires unique usernames to be registered
@@ -23,4 +23,10 @@ This is a Flask app, whose code has initially been taken from Claude AI and then
  - They can search for patients
  - They can view appointments
  - They can find analytics of the software
-    - The number of patients and doctors registered 
+    - The number of patients and doctors registered
+  
+## How to run?
+1. Fork this repo
+2. pip install Flask
+3. Any other required dependencies need to be installed
+4. python app.py // python3 app.py (whichever works)
