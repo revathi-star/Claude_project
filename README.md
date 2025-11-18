@@ -19,11 +19,11 @@ This is a Flask app, whose code has initially been taken from Claude AI and then
   - They can provide their availability
   - They can cancel appointments or complete them by updating their diagnosis info
 - *Admin*
- - They can add new doctors or delete them
- - They can search for patients
- - They can view appointments
- - They can find analytics of the software
-    - The number of patients and doctors registered
+   - They can add new doctors or delete them
+   - They can search for patients
+   - They can view appointments
+   - They can find analytics of the software
+      - The number of patients and doctors registered
   
 ## How to run?
 1. Fork this repo
